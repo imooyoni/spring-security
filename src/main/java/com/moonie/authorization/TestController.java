@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "TEST API", description = "SECURITY 인가 TEST API")
+@Tag(name = "# TEST API", description = "SECURITY 인가 TEST API")
 @RestController
 public class TestController {
     @RequestMapping("/admin")
