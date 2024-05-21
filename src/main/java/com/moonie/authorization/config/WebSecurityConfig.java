@@ -35,14 +35,17 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
+                                //권한 체크 X
+                                .requestMatchers("/swagger-ui/*").permitAll()
+                                //권한 체크 O
                                 .requestMatchers("/admin").hasRole("admin")
                                 .requestMatchers("/user").hasRole("user")
                                 .anyRequest().authenticated())
-                .formLogin((formLogin) ->
-                        formLogin.usernameParameter(("username"))
-                                .passwordParameter(("password"))
-                                .defaultSuccessUrl("/",true)
-                );
+                    .formLogin((formLogin) ->
+                            formLogin.usernameParameter(("username"))
+                                    .passwordParameter(("password"))
+                                    .defaultSuccessUrl("/",true)
+                    );
         return httpSecurity.build();
     }
 
