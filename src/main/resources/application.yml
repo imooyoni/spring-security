@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    default: local
+    group:
+      local:
+        - common
+      dev:
+        - common
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+greeting: hello

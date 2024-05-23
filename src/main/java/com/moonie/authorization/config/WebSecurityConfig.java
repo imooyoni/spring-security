@@ -1,6 +1,7 @@
 package com.moonie.authorization.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -31,21 +34,42 @@ public class WebSecurityConfig {
 //    }
 
     //2. security  인가 설정(권한)
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.authorizeHttpRequests((authorizeRequests) ->
+//                        authorizeRequests
+//                                //권한 체크 X
+//                                .requestMatchers("/swagger-ui/**", "/h2-console/**").permitAll()
+//                                .requestMatchers(PathRequest.toH2Console()).permitAll()
+//                                //권한 체크 O
+////                                .requestMatchers("/admin").hasRole("admin")
+////                                .requestMatchers("/user").hasRole("user")
+//                                .anyRequest().authenticated())
+//                    .formLogin((formLogin) ->
+//                            formLogin.usernameParameter(("username"))
+//                                    .passwordParameter(("password"))
+//                                    .defaultSuccessUrl("/",true)
+//                    );
+//        return httpSecurity.build();
+//    }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests
-                                //권한 체크 X
-                                .requestMatchers("/swagger-ui/*").permitAll()
-                                //권한 체크 O
-                                .requestMatchers("/admin").hasRole("admin")
-                                .requestMatchers("/user").hasRole("user")
-                                .anyRequest().authenticated())
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
+       // H2 DB 사용시 mvcRequestMatcher option으로 예외 url 설정해 주어야 사용가능
+        
+        MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
+        h2RequestMatcher.setServletPath("/h2-console");
+        httpSecurity.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                                                .requestMatchers(h2RequestMatcher).permitAll()
+                                                .requestMatchers("/admin").hasRole("admin")
+                                                .requestMatchers("/user").hasRole("user")
+                                                .anyRequest().authenticated())
+                    .csrf((csrf) -> csrf.disable()) // 반드시 추가 옵션 : 기능이 뭐지....?
+                    .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
                     .formLogin((formLogin) ->
                             formLogin.usernameParameter(("username"))
                                     .passwordParameter(("password"))
                                     .defaultSuccessUrl("/",true)
-                    );
+        );
         return httpSecurity.build();
     }
 

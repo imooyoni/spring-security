@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Info()
                 .title("Spring-Security API DOCS") // API의 제목
                 .description("240521 - ing : spring-security api docs") // API에 대한 설명
-                .version("1.0.0"); // API의 버전
+                .version("0.0.1"); // API의 버전
     }
     /////////// JWT 미사용 config //////////////
     /////////// JWT 사용 config //////////////
