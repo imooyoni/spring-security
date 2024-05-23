@@ -63,7 +63,7 @@ public class WebSecurityConfig {
                                                 .requestMatchers("/admin").hasRole("admin")
                                                 .requestMatchers("/user").hasRole("user")
                                                 .anyRequest().authenticated())
-                    .csrf((csrf) -> csrf.disable()) // 반드시 추가 옵션 : 기능이 뭐지....?
+                    .csrf((csrf) -> csrf.disable()) // h2 console 접근 시 필요 조건
                     .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
                     .formLogin((formLogin) ->
                             formLogin.usernameParameter(("username"))
