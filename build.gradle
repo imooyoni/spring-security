@@ -31,11 +31,24 @@ dependencies {
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
+    //logging(log4j2)
+    implementation "org.springframework.boot:spring-boot-starter-log4j2"	    // Spring Boot Log4j2
+    modules {
+        module("org.springframework.boot:spring-boot-starter-logging") {
+            replacedBy("org.springframework.boot:spring-boot-starter-log4j2", "Use Log4j2 instead of Logback")
+        }
+    }
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'  // for using log4j2 setting file as a yml format
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+//configurations {
+//    all*.exclude module: 'spring-boot-starter-logging'
+//}
 
 tasks.named('test') {
     useJUnitPlatform()
