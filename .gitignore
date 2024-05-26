@@ -40,6 +40,9 @@ out/
 application-common.yml
 application-local.yml
 
+### h2 database schema ###
+.sql
+
 
 
 
