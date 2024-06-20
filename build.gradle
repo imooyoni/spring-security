@@ -30,9 +30,12 @@ dependencies {
 
     //swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    // log4jdbc 의존성 추가
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     //logging(log4j2)
-    implementation "org.springframework.boot:spring-boot-starter-log4j2"	    // Spring Boot Log4j2
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'	    // Spring Boot Log4j2
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'   // yaml 형식의 데이터 읽기/쓰기 지원
     modules {
         module("org.springframework.boot:spring-boot-starter-logging") {
             replacedBy("org.springframework.boot:spring-boot-starter-log4j2", "Use Log4j2 instead of Logback")

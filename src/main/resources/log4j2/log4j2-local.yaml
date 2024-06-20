@@ -1,6 +1,6 @@
 Configutation:
   # 구성 이름
-  name: multiflex-api-local
+  name: authorization
 
   # [Properties] 설정에 사용되는 속성들을 정의
   Properties:
@@ -109,3 +109,6 @@ Configutation:
         level: OFF
       - name: jdbc.connection
         level: OFF
+
+# https://yainii.tistory.com/33
+# yml로 log4j2 설정하기 https://adjh54.tistory.com/388

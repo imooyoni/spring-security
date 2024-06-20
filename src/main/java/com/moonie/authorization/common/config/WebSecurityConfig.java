@@ -1,4 +1,4 @@
-package com.moonie.authorization.config;
+package com.moonie.authorization.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
