@@ -56,3 +56,9 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+    archivesBaseName = 'authorization'
+    archiveFileName = 'authorization.jar'
+    archiveVersion = "0.0.0"
+}
