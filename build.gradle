@@ -42,6 +42,7 @@ dependencies {
         }
     }
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'  // for using log4j2 setting file as a yml format
+    implementation'org.springframework.boot:spring-boot-starter-mustache'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

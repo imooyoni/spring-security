@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -55,21 +56,22 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
        // H2 DB 사용시 mvcRequestMatcher option으로 예외 url 설정해 주어야 사용가능
-        
         MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
         h2RequestMatcher.setServletPath("/h2-console");
         httpSecurity.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                                                 .requestMatchers(h2RequestMatcher).permitAll()
+                                                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                                 .requestMatchers("/admin").hasRole("admin")
                                                 .requestMatchers("/user").hasRole("user")
-                                                .anyRequest().authenticated())
+                                                .anyRequest().permitAll())
                     .csrf((csrf) -> csrf.disable()) // h2 console 접근 시 필요 조건
                     .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
-                    .formLogin((formLogin) ->
-                            formLogin.usernameParameter(("username"))
-                                    .passwordParameter(("password"))
-                                    .defaultSuccessUrl("/",true)
-        );
+                    .formLogin((formLogin) -> formLogin
+                        .loginPage("/login") // 커스텀 로그인 페이지 경로
+                        .usernameParameter(("username"))
+                        .passwordParameter(("password"))
+                        .defaultSuccessUrl("/",true));
+//                    .formLogin(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
 
