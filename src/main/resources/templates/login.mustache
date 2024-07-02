@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        body{
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            height: 100vh; /* 화면 전체 높이를 사용하도록 설정 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0; /* 배경 색상 추가 */
+        }
+        .login-wrapper{
+            /*display: grid;*/
+            /*place-items: center;*/
+            width: 400px;
+            height: 350px;
+            padding: 40px;
+            box-sizing: border-box;
+            background-color: #fff; /* 배경 색상 추가 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+            border-radius: 8px; /* 둥근 모서리 추가 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+
+        .login-wrapper > h2{
+            font-size: 24px;
+            color: #6A24FE;
+            margin-bottom: 20px;
+        }
+        #login-form > input{
+            width: 100%;
+            height: 48px;
+            padding: 0 10px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            border-radius: 6px;
+            background-color: #F8F8F8;
+            border: 1px solid #ddd; /* 테두리 추가 */
+        }
+        #login-form > input::placeholder{
+            color: #D2D2D2;
+        }
+        #login-form > input[type="submit"]{
+            color: #fff;
+            font-size: 16px;
+            background-color: #6A24FE;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s; /* 마우스 오버 시 배경색 전환 */
+        }
+        #login-form > input[type="submit"]:hover{
+            background-color: #5721d4; /* 마우스 오버 시 배경색 변경 */
+        }
+        #login-form > input[type="checkbox"]{
+            display: none;
+        }
+        #login-form > label{
+            color: #999999;
+        }
+        #login-form input[type="checkbox"] + label{
+            cursor: pointer;
+            padding-left: 26px;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+        #login-form input[type="checkbox"]:checked + label{
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <h2>Login</h2>
+        <form method="post" action="/imooyoni/login/submit" id="login-form">
+            <input type="text" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <label for="remember-check">
+                <input type="checkbox" id="remember-check">아이디 저장하기
+            </label>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>

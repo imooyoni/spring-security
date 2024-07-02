@@ -6,7 +6,7 @@ create table USER_BASIC
     user_password varchar(255) not null,
     primary key (user_id)
 );
-insert into user_basic (user_name, user_email, user_password) values ('tom','tom@test.com','user1234');
+insert into USER_BASIC(user_name, user_email, user_password) values ('tom','tom@test.com','user1234');
 
 create table USER_TOKEN
 (
