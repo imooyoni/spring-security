@@ -2,10 +2,213 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcom</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juyeon Ye Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            background-color: black;
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+        .nav a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            flex: 1;
+            white-space: nowrap;
+        }
+        .nav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .locale-toggle {
+            padding: 14px 16px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .header h2 {
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        .intro, .about {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .intro h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+        .intro p {
+            font-size: 1em;
+            margin: 20px 0;
+        }
+        .about h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .about .section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .about .section-content div {
+            margin: 10px;
+            text-align: left;
+            width: 90%;
+        }
+        .about .section-content h3 {
+            font-size: 1em;
+            border-bottom: 1px solid white;
+            padding-bottom: 5px;
+        }
+        .about .section-content p, .about .section-content ul {
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        .about .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .about .section-content ul li {
+            margin: 5px 0;
+        }
+        .hard-skills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hard-skills img {
+            margin: 5px;
+        }
+        .contact, .login {
+            text-align: center;
+            padding: 50px 20px;
+        }
+        .contact h1, .login h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+        .contact p, .login p {
+            font-size: 1em;
+            margin: 20px 0;
+        }
+
+        @media (min-width: 576px) {
+            .header h1 {
+                font-size: 3em;
+            }
+            .header h2 {
+                font-size: 1.2em;
+            }
+            .intro h1 {
+                font-size: 2.5em;
+            }
+            .intro p {
+                font-size: 1.2em;
+            }
+            .about h1 {
+                font-size: 2em;
+            }
+            .about .section-content {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .about .section-content div {
+                width: 45%;
+            }
+        }
+    </style>
 </head>
 <body>
-    imooyoni's welcompage<br>
-    WELCOME!
+<div class="nav">
+    <div style="display: flex; flex: 1;">
+        <a href="#home">home</a>
+        <a href="#aboutme">aboutme</a>
+        <a href="#contact">contact</a>
+        <a href="#login">login</a>
+    </div>
+    <div class="locale-toggle" onclick="toggleLocale()">KR | EN</div>
+</div>
+<div class="header" id="home">
+    <h1>welcome to my portfolio <span style="font-size: 0.5em;">1.0.0</span></h1>
+    <h2>WEB PORTFOLIO | WOOYEON IM | IMOOYONI@GMAIL.COM | BACKEND DEVELOPER | PORTFOLIO.IMOOYONI.COM</h2>
+</div>
+<div class="intro">
+    <h1>hi, my name is Wooyeon Im.</h1>
+    <p>I’m a creative and passionate Graphic Designer. Adept at producing high-quality graphic design by Photoshop and Illustrator. And I have excellent teamwork abilities, and strong time management skills.</p>
+</div>
+<div class="about" id="aboutme">
+    <h1>About ( me )</h1>
+    <div class="section-content">
+        <div>
+            <h3>Contact</h3>
+            <p>D.O.B: 06/02/2001</p>
+            <p>School: Anyang High School of Art, Graduated From Hansung University, majoring in Industrial Design, GPA: 3.43</p>
+        </div>
+        <div>
+            <h3>Soft Skills</h3>
+            <ul>
+                <li>Team Management</li>
+                <li>Communication</li>
+                <li>Leadership</li>
+                <li>Problem Solving</li>
+                <li>Time Management</li>
+                <li>Responsible</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Languages</h3>
+            <p>English: Advanced Level</p>
+            <p>Korean: Native</p>
+        </div>
+        <div>
+            <h3>Hard Skills</h3>
+            <div class="hard-skills">
+                <img src="path/to/skill-icon1.png" alt="Skill 1">
+                <img src="path/to/skill-icon2.png" alt="Skill 2">
+                <img src="path/to/skill-icon3.png" alt="Skill 3">
+                <img src="path/to/skill-icon4.png" alt="Skill 4">
+                <img src="path/to/skill-icon5.png" alt="Skill 5">
+            </div>
+        </div>
+        <div>
+            <h3>Internships</h3>
+            <ul>
+                <li>Photography</li>
+                <li>Illustrator at Jalseo co.</li>
+                <li>Photos at Ms.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="contact" id="contact">
+    <h1>Contact</h1>
+    <p>For inquiries, please email me at YEUINTOTHET1@GMAIL.COM</p>
+</div>
+<div class="login" id="login">
+    <h1>Login</h1>
+    <p>This section can be used for login functionality.</p>
+</div>
 </body>
 </html>
