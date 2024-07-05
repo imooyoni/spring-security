@@ -1,0 +1,4 @@
+2024-07-05 17:52:00,958 INFO o.s.b.StartupInfoLogger [restartedMain] Starting AuthorizationApplication using Java 17 with PID 12376 (C:\Workspace\back\authorization\build\classes\java\main started by user in C:\Workspace\back\authorization)
+2024-07-05 17:52:00,962 DEBUG o.s.b.StartupInfoLogger [restartedMain] Running with Spring Boot v3.2.5, Spring v6.1.6
+2024-07-05 17:52:00,963 INFO o.s.b.SpringApplication [restartedMain] The following 2 profiles are active: "local", "common"
+2024-07-05 17:52:03,751 INFO o.s.b.StartupInfoLogger [restartedMain] Started AuthorizationApplication in 3.217 seconds (process running for 3.706)

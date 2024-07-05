@@ -6,7 +6,6 @@ create table USER_BASIC
     user_password varchar(255) not null,
     primary key (user_id)
 );
-insert into USER_BASIC(user_name, user_email, user_password) values ('tom','tom@test.com','user1234');
 
 create table USER_TOKEN
 (
@@ -26,4 +25,6 @@ create table USER_ROLE
     created_at datetime(6) not null DEFAULT CURRENT_TIMESTAMP() ,
     primary key (role_id)
 );
+
+insert into USER_BASIC(user_name, user_email, user_password) values ('tom','tom@test.com','user1234');
 insert into USER_ROLE(role_name, description) values ('admin', 'admin account');

@@ -35,6 +35,9 @@ dependencies {
 
     //logging(log4j2)
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'	    // Spring Boot Log4j2
+    implementation 'org.apache.logging.log4j:log4j-core'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl'                  // ansi 색상 코드 사용
+    implementation 'org.apache.logging.log4j:log4j-api'                         // ansi 색상 코드 사용
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'   // yaml 형식의 데이터 읽기/쓰기 지원
     modules {
         module("org.springframework.boot:spring-boot-starter-logging") {
@@ -50,9 +53,9 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-//configurations {
-//    all*.exclude module: 'spring-boot-starter-logging'
-//}
+configurations {
+    all*.exclude module: 'spring-boot-starter-logging'
+}
 
 tasks.named('test') {
     useJUnitPlatform()

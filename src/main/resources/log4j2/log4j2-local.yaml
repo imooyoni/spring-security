@@ -10,7 +10,8 @@ Configutation:
       - name: "charset-UTF-8"
         value: "UTF-8"
       - name: "layout-pattern"
-        value: "%style{%d}{black} %highlight{%-5level} [%style{%t}{bright,blue}] %style{%C}{bright,yellow}: %msg%n%throwable"
+#        value: "%style{%d}{black} %highlight{%-5level} [%style{%t}{bright,blue}] %style{%C}{bright,yellow}: %msg%n%throwable"
+        value: "%highlight{[%-5level]}{FATAL=bg_red, ERROR=red, INFO=green, DEBUG=blue} %style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} [%C] %style{[%t]}{yellow}- %m%n"
       - name: "info-log"
         value: ${log-path}/tugboatApi/api-info.log
       - name: "error-log"
@@ -24,10 +25,13 @@ Configutation:
   Appenders:
     # [Appenders - Console] 콘솔에 로그를 출력하는 방식 정의
     Console:
-      - name: console-appender
-        target: SYSTEM_OUT
-        PatternLayout:
-          pattern: ${layout-pattern}
+      name: console-appender
+      target: SYSTEM_OUT
+      PatternLayout:
+        charset: ${charset-UTF-8}
+        pattern: ${layout-pattern}
+        withAnsi: true  # ANSI 색상 코드 활성화
+        disableAnsi: false
 
     # [Appenders - RollingFile] 로그를 파일들을 압축파일로 출력하는 방식 정의
     RollingFile:
@@ -69,7 +73,8 @@ Configutation:
   Loggers:
     # [Loggers - Root] 모든 로그를 기록하는 최상위 로그를 정의
     Root:
-      level: OFF
+      level: INFO
+      additivity: false
       AppenderRef:
         - ref: console-appender
         - ref: rolling-file-appender
@@ -77,8 +82,8 @@ Configutation:
     # [Loggers - Loggers] 특정 패키지나 클래스에 대한 로그를 정의
     Logger:
       # 1. Spring Framework 로그 레벨 'INFO' 정의
-      - name: org.springframework
-        additivity: "false"
+      - name: com.moonie
+        additivity: false
         level: INFO
         AppenderRef:
           - ref: console-appender
@@ -87,7 +92,7 @@ Configutation:
 
       # 2. Spring Framework 로그 레벨 'DEBUG' 정의
       - name: com.moonie
-        additivity: "false"
+        additivity: false
         level: DEBUG
         AppenderRef:
           - ref: console-appender
@@ -97,18 +102,25 @@ Configutation:
       # 3. MyBatis 관련 로그 레벨 특정 패키지 외에는 모두 OFF
       - name: jdbc
         level: OFF
+        additivity: false
       - name: jdbc.sqlonly
         level: OFF
+        additivity: false
       - name: jdbc.sqltiming
         level: INFO
+        additivity: false
       - name: jdbc.resultsettable
         level: OFF
+        additivity: false
       - name: jdbc.audit
         level: OFF
+        additivity: false
       - name: jdbc.resultset
-        level: OFF
+        level: DEBUG
+        additivity: false
       - name: jdbc.connection
         level: OFF
+        additivity: false
 
 # https://yainii.tistory.com/33
 # yml로 log4j2 설정하기 https://adjh54.tistory.com/388

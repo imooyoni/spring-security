@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Locale;
+
 @Tag(name = "# TEST API", description = "SECURITY 인가 TEST API_2")
 @RestController
 @NoArgsConstructor( access = AccessLevel.PROTECTED, force = true)
@@ -28,8 +30,12 @@ public class TestController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity test() {
-
-        return new ResponseEntity<>("test 입니다.", HttpStatus.OK);
+    public String getResponse(Locale locale) {
+        // locale에 따라 다른 응답을 생성
+        if (locale.getLanguage().equals("ko")) {
+            return "안녕하세요!";
+        } else {
+            return "Hello!";
+        }
     }
 }

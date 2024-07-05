@@ -3,6 +3,8 @@ server:
     context-path: /imooyoni
     encoding:
       force: true
+      charset: UTF-8
+      enabled: true
   port: 8000
 
 spring:
@@ -19,11 +21,10 @@ h2:
 jpa:
   database-platform: org.hibernate.dialect.H2Dialect
   hibernate:
-    ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
-  properties:
-    hibernate:
-      dialect: org.hibernate.dialect.H2Dialect
-      format_sql: true      # 쿼리 로그 포맷 (정렬)
-      show_sql: true        # 쿼리 로그 출력
-
-
+    ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
+    show_sql: false        # 쿼리 로그 출력
+#  properties:
+#    hibernate:
+#      dialect: org.hibernate.dialect.H2Dialect
+#      format_sql: true      # 쿼리 로그 포맷 (정렬)
+#      show_sql: false        # 쿼리 로그 출력

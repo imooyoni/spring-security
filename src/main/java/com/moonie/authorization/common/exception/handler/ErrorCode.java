@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    // 400
-    UNKNOWN(000, "알 수 없는 에러가 발생했습니다.")
-    ;
+    // COMMON
+    INTERNAL_SERVER_ERROR(500, "internal.server.error"),
+    NOT_IMPLEMENTED(501, "not.implemented"),
 
-    private final int serverErrcode;
-    private final String serverMsg;
+    // LOGIN
+    LOGIN_NO_EXIST_USER(1, "login.no.exist.user");
+
+    private final int serverStatus;
+    private final String messageKey;
 }
