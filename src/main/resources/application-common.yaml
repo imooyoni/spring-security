@@ -8,23 +8,31 @@ server:
   port: 8000
 
 spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   application:
     name: authorization
+  mustache:
+    prefix: classpath:/templates/
+    suffix: .mustache
+  # JPA 설정
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    #    show_sql: false        # 쿼리 로그 (콘솔로그로) 출력
+    #  properties:
+    #    hibernate:
+    #      dialect: org.hibernate.dialect.H2Dialect
+    #      format_sql: false      # 쿼리 로그 포맷 (정렬)
+    #      show_sql: true         # 쿼리 로그 출력
+    #      highlight_sql: true    # ANSI 코드에 색을 나타낸다
 
 # H2 Console 설정
 h2:
   console: # H2 DB를 웹에서 관리할 수 있는 기능
     enabled: true           # H2 Console 사용 여부
     path: /h2-console       # H2 Console 접속 주소
-
-# JPA 설정
-jpa:
-  database-platform: org.hibernate.dialect.H2Dialect
-  hibernate:
-    ddl-auto: none        # DB 초기화 전략 (none, create, create-drop, update, validate)
-    show_sql: false        # 쿼리 로그 출력
-#  properties:
-#    hibernate:
-#      dialect: org.hibernate.dialect.H2Dialect
-#      format_sql: true      # 쿼리 로그 포맷 (정렬)
-#      show_sql: false        # 쿼리 로그 출력

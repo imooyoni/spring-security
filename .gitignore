@@ -43,6 +43,9 @@ application-local.yml
 ### h2 database schema ###
 .sql
 
+### logging files ###
+logs/
 
-
-
+### style files ###
+**/static/css/
+**/static/src/

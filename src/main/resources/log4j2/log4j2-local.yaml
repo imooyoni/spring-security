@@ -100,27 +100,27 @@ Configutation:
           - ref: file-error-appender
 
       # 3. MyBatis 관련 로그 레벨 특정 패키지 외에는 모두 OFF
-      - name: jdbc
-        level: OFF
-        additivity: false
-      - name: jdbc.sqlonly
-        level: OFF
-        additivity: false
-      - name: jdbc.sqltiming
-        level: INFO
-        additivity: false
-      - name: jdbc.resultsettable
-        level: OFF
-        additivity: false
-      - name: jdbc.audit
-        level: OFF
-        additivity: false
-      - name: jdbc.resultset
-        level: DEBUG
-        additivity: false
-      - name: jdbc.connection
-        level: OFF
-        additivity: false
+#      - name: jdbc
+#        level: OFF
+#        additivity: false
+#      - name: jdbc.sqlonly
+#        level: INFO
+#        additivity: false
+#      - name: jdbc.sqltiming
+#        level: INFO
+#        additivity: false
+#      - name: jdbc.resultsettable
+#        level: OFF
+#        additivity: false
+#      - name: jdbc.audit
+#        level: OFF
+#        additivity: false
+#      - name: jdbc.resultset
+#        level: DEBUG
+#        additivity: false
+#      - name: jdbc.connection
+#        level: OFF
+#        additivity: false
 
 # https://yainii.tistory.com/33
 # yml로 log4j2 설정하기 https://adjh54.tistory.com/388

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juyeon Ye Portfolio</title>
+    <title>Wooyeon Im Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -138,17 +138,107 @@
                 width: 45%;
             }
         }
+
+        .toggleSwitch {
+            cursor: pointer;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .toggleSwitch .toggleButton {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            background: #000000;
+        }
+
+        .toggleSwitch.checked .toggleButton {
+            left: 26px;
+        }
     </style>
+    <script>
+        let currentLocale = 'kr';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggle = document.getElementById('toggle');
+            const toggleSwitch = document.querySelector('.toggleSwitch');
+
+            toggleSwitch.addEventListener('click', () => {
+                // toggle.checked = !toggle.checked;
+                updateToggleSwitch();
+                updateLocale();
+                updateNavMenu();
+            });
+
+            function updateLocale() {
+                currentLocale = toggle.checked ? 'kr' : 'en';
+                console.log('Locale changed to:', currentLocale);
+            }
+
+            function updateToggleSwitch() {
+                if (toggle.checked) {
+                    toggleSwitch.classList.remove('checked');
+                } else {
+                    toggleSwitch.classList.add('checked');
+                }
+            }
+
+            function updateNavMenu() {
+                const navLinks = document.querySelectorAll('.nav a');
+                const menuItems = {
+                    en: ['Home', 'About Me', 'Contact', 'Login'],
+                    kr: ['홈', '소개', '연락처', '로그인']
+                };
+
+                navLinks.forEach((link, index) => {
+                    link.textContent = menuItems[currentLocale][index];
+                });
+            }
+
+            // 초기 로드 시 locale과 nav 메뉴 업데이트
+            updateLocale();
+            // updateToggleSwitch();
+            // updateNavMenu();
+        });
+
+        async function makeRequest(url) {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Locale': currentLocale
+                }
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
+    </script>
 </head>
 <body>
 <div class="nav">
     <div style="display: flex; flex: 1;">
-        <a href="#home">home</a>
-        <a href="#aboutme">aboutme</a>
-        <a href="#contact">contact</a>
-        <a href="#login">login</a>
+        <a href="#home">홈</a>
+        <a href="#aboutme">소개</a>
+        <a href="#contact">연락처</a>
+        <a href="#login">로그인</a>
     </div>
-    <div class="locale-toggle" onclick="toggleLocale()">KR | EN</div>
+    <div class="locale-toggle">
+        <input type="checkbox" id="toggle" hidden>
+
+        <label for="toggle" class="toggleSwitch">
+            <span class="toggleButton"></span>
+        </label>
+    </div>
 </div>
 <div class="header" id="home">
     <h1>welcome to my portfolio <span style="font-size: 0.5em;">1.0.0</span></h1>

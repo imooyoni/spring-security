@@ -14,7 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -64,6 +68,18 @@ public class WebSecurityConfig {
                                                 .requestMatchers("/admin").hasRole("admin")
                                                 .requestMatchers("/user").hasRole("user")
                                                 .anyRequest().permitAll())
+                    .cors(c -> {
+                        CorsConfigurationSource source = request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(List.of("http://localhost:3000"
+                                                             , "test.com"
+                                                            )
+                                                    );
+                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                            return config;
+                        };
+                        c.configurationSource(source);
+                    })
                     .csrf((csrf) -> csrf.disable()) // h2 console 접근 시 필요 조건
                     .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
                     .formLogin((formLogin) -> formLogin
