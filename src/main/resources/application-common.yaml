@@ -8,13 +8,14 @@ server:
   port: 8000
 
 spring:
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+# 해당 속성은 server 속성으로 설정하도록 2.x 부터 적용되었음!
+#  http:
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
   application:
-    name: authorization
+   name: authorization
   mustache:
     prefix: classpath:/templates/
     suffix: .mustache
@@ -30,9 +31,14 @@ spring:
     #      format_sql: false      # 쿼리 로그 포맷 (정렬)
     #      show_sql: true         # 쿼리 로그 출력
     #      highlight_sql: true    # ANSI 코드에 색을 나타낸다
-
-# H2 Console 설정
-h2:
-  console: # H2 DB를 웹에서 관리할 수 있는 기능
-    enabled: true           # H2 Console 사용 여부
-    path: /h2-console       # H2 Console 접속 주소
+  # jwt 설정
+  jwt:
+    header: Authorization
+    secret: c2VjcmV0LWp3dC10dXRvcmlhbC1tYWtlLWxvbmdlci0yNTYtYml0ZQ== #secret-jwt-tutorial-make-longer-256-bite
+    token-validity-in-seconds: 86400 #day
+#    secret: temporary
+  # H2 Console 설정
+  h2:
+    console: # H2 DB를 웹에서 관리할 수 있는 기능
+      enabled: true           # H2 Console 사용 여부
+      path: /h2-console       # H2 Console 접속 주소

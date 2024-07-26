@@ -17,19 +17,19 @@ public class ExceptionContollerAdvice {
     @Autowired
     private MessageSource messageSource;
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception ex) {
-//        Locale locale = request.getLocale();
-//        String errorMessage = messageSource.getMessage("internal.server.error", null, locale);
-//
-//        ErrorResponse errorResponse = new ErrorResponse();
-//        errorResponse.setStatus(500);
-//        errorResponse.setMessage(errorMessage);
-//
-//        return ResponseEntity.status(500)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(errorResponse);
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(HttpServletRequest request, Exception ex) {
+        Locale locale = request.getLocale();
+        String errorMessage = messageSource.getMessage("internal.server.error", null, locale);
+
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setStatus(500);
+        errorResponse.setMessage(errorMessage);
+
+        return ResponseEntity.status(500)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(errorResponse);
+    }
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(HttpServletRequest request, CustomException customException) {

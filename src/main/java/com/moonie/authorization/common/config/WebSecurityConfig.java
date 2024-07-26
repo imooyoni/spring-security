@@ -1,5 +1,10 @@
 package com.moonie.authorization.common.config;
 
+import com.moonie.authorization.jwt.JwtAccessDeniedHandler;
+import com.moonie.authorization.jwt.JwtAuthenticationEntryPoint;
+import com.moonie.authorization.jwt.JwtSecurityConfig;
+import com.moonie.authorization.jwt.JwtTokenUtil;
+import com.moonie.authorization.user.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -24,6 +30,69 @@ import java.util.List;
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
+
+    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomUserDetailService customUserDetailService;
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
+       // H2 DB 사용시 mvcRequestMatcher option으로 예외 url 설정해 주어야 사용가능
+        MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
+        h2RequestMatcher.setServletPath("/h2-console");
+        httpSecurity
+                    .csrf((csrf) -> csrf.disable()) // h2 console 접근 시 필요 조건
+                    .exceptionHandling(exceptionHandling -> exceptionHandling
+                            .accessDeniedHandler(jwtAccessDeniedHandler)
+                            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    )
+                    .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                                                .requestMatchers(h2RequestMatcher).permitAll()
+                                                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                                .requestMatchers( "/api/authenticate").permitAll()
+                                                .requestMatchers("/admin").hasRole("admin")
+                                                .requestMatchers("/user").hasRole("user")
+                                                .anyRequest().permitAll())
+                    .cors(c -> {
+                        CorsConfigurationSource source = request -> {
+                            CorsConfiguration config = new CorsConfiguration();
+                            config.setAllowedOrigins(List.of("http://localhost:3000"
+                                                             , "test.com"
+                                                            )
+                                                    );
+                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                            return config;
+                        };
+                        c.configurationSource(source);
+                    })
+                    .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
+                    .formLogin((formLogin) -> formLogin
+                            .loginPage("/login") // 커스텀 로그인 페이지 경로
+                            .usernameParameter(("username"))
+                            .passwordParameter(("password"))
+                            .defaultSuccessUrl("/",true)
+                    )
+                    .with(new JwtSecurityConfig(jwtTokenUtil), customizer -> {}); //jwt
+//                    .formLogin(AbstractHttpConfigurer::disable);
+        return httpSecurity.build();
+    }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        return new CustomUserDetailService(userBasicRepository);
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        manager.createUser(User.withUsername("admin").password("1234").roles("admin").build());
+//        return manager;
+//    }
+
+    //ref1. https://www.elancer.co.kr/blog/view?seq=235
+    //ref2. https://this-circle-jeong.tistory.com/162
     // spring security 5.7 이상 WebSecurityConfigurerAdapter 지원 중단
     // 1. security 인증 설정(유저 확인)
 //    @Bean
@@ -57,53 +126,4 @@ public class WebSecurityConfig {
 //                    );
 //        return httpSecurity.build();
 //    }
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
-       // H2 DB 사용시 mvcRequestMatcher option으로 예외 url 설정해 주어야 사용가능
-        MvcRequestMatcher h2RequestMatcher = new MvcRequestMatcher(introspector, "/**");
-        h2RequestMatcher.setServletPath("/h2-console");
-        httpSecurity.authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                                                .requestMatchers(h2RequestMatcher).permitAll()
-                                                .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                                .requestMatchers("/admin").hasRole("admin")
-                                                .requestMatchers("/user").hasRole("user")
-                                                .anyRequest().permitAll())
-                    .cors(c -> {
-                        CorsConfigurationSource source = request -> {
-                            CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(List.of("http://localhost:3000"
-                                                             , "test.com"
-                                                            )
-                                                    );
-                            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-                            return config;
-                        };
-                        c.configurationSource(source);
-                    })
-                    .csrf((csrf) -> csrf.disable()) // h2 console 접근 시 필요 조건
-                    .headers((headers) -> headers.frameOptions((frame) -> frame.sameOrigin()))
-                    .formLogin((formLogin) -> formLogin
-                        .loginPage("/login") // 커스텀 로그인 페이지 경로
-                        .usernameParameter(("username"))
-                        .passwordParameter(("password"))
-                        .defaultSuccessUrl("/",true));
-//                    .formLogin(AbstractHttpConfigurer::disable);
-        return httpSecurity.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(){
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("admin").password("1234").roles("admin").build());
-        return manager;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
-    }
-
-    //ref1. https://www.elancer.co.kr/blog/view?seq=235
-    //ref2. https://this-circle-jeong.tistory.com/162
-
 }
