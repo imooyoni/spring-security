@@ -1,123 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            border: none;
-        }
-        body{
-            font-size: 14px;
-            font-family: 'Roboto', sans-serif;
-            height: 100vh; /* 화면 전체 높이를 사용하도록 설정 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0; /* 배경 색상 추가 */
-        }
-        .login-wrapper{
-            /*display: grid;*/
-            /*place-items: center;*/
-            width: 400px;
-            height: 350px;
-            padding: 40px;
-            box-sizing: border-box;
-            background-color: #fff; /* 배경 색상 추가 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-            border-radius: 8px; /* 둥근 모서리 추가 */
-            text-align: center; /* 텍스트 가운데 정렬 */
-        }
-
-        .login-wrapper > h2{
-            font-size: 24px;
-            color: #6A24FE;
-            margin-bottom: 20px;
-        }
-        #login-form > input{
-            width: 100%;
-            height: 48px;
-            padding: 0 10px;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-            border-radius: 6px;
-            background-color: #F8F8F8;
-            border: 1px solid #ddd; /* 테두리 추가 */
-        }
-        #login-form > input::placeholder{
-            color: #D2D2D2;
-        }
-        #login-form > input[type="submit"]{
-            color: #fff;
-            font-size: 16px;
-            background-color: #6A24FE;
-            margin-top: 20px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s; /* 마우스 오버 시 배경색 전환 */
-        }
-        #login-form > input[type="submit"]:hover{
-            background-color: #5721d4; /* 마우스 오버 시 배경색 변경 */
-        }
-        #login-form > input[type="checkbox"]{
-            display: none;
-        }
-        #login-form > label{
-            color: #999999;
-        }
-        #login-form input[type="checkbox"] + label{
-            cursor: pointer;
-            padding-left: 26px;
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-        #login-form input[type="checkbox"]:checked + label{
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-    </style>
-    <script>
-        // 클라이언트의 locale 정보를 가져오는 함수
-        function getClientLocale() {
-            return navigator.language || navigator.userLanguage;
-        }
-
-        // locale 정보를 포함하여 AJAX 요청을 보내는 함수
-        function sendRequestWithLocale() {
-            const locale = getClientLocale();
-            fetch('/your-endpoint', {
-                method: 'GET',
-                headers: {
-                    'Accept-Language': locale
-                }
-            })
-                    .then(response => response.json())
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Error:', error));
-        }
-
-        // 페이지 로드 시 요청을 보냄
-        window.onload = function() {
-            sendRequestWithLocale();
-        }
-    </script>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css'>
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css'>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <div class="login-wrapper">
-        <h2>Login</h2>
-        <form method="post" action="/imooyoni/login/submit" id="login-form">
-            <input type="text" name="username" placeholder="UserName">
-            <input type="password" name="password" placeholder="Password">
-            <label for="remember-check">
-                <input type="checkbox" id="remember-check">아이디 저장하기
-            </label>
-            <input type="submit" value="Login">
-        </form>
+<!-- partial:index.partial.html -->
+<body id="particles-js"></body>
+<div class="animated bounceInDown">
+  <div class="container">
+    <span class="error animated tada" id="msg"></span>
+    <form name="form1" class="box" onsubmit="return checkStuff()">
+      <h4>Login <span>Console</span></h4>
+      <h5>Sign in to your account.</h5>
+        <input type="text" name="email" placeholder="Email" autocomplete="off">
+        <i class="typcn typcn-eye" id="eye"></i>
+        <input type="password" name="password" placeholder="Passsword" id="pwd" autocomplete="off">
+        <label>
+          <input type="checkbox">
+          <span></span>
+          <small class="rmb">Remember me</small>
+        </label>
+        <a href="#" class="forgetpass">Forget Password?</a>
+        <input type="submit" value="Sign in" class="btn1">
+      </form>
+        <a href="/imooyoni/user/signup" class="dnthave">Don’t have an account? Sign up</a>
+  </div> 
+       <div class="footer">
+      <span>Made with <i class="fa fa-heart pulse"></i> <a href="https://www.google.de/maps/place/Augsburger+Puppenkiste/@48.360357,10.903245,17z/data=!3m1!4b1!4m2!3m1!1s0x479e98006610a511:0x73ac6b9f80c4048f"><a href="https://codepen.io/lordgamer2354">By Anees Khan</a></span>
     </div>
+</div>
+<!-- partial -->
+  <script src='https://cldup.com/S6Ptkwu_qA.js'></script>
+  <script  src="/script.js"></script>
 </body>
-<script>
-</script>
 </html>

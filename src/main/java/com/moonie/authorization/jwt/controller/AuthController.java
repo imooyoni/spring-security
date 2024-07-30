@@ -3,7 +3,7 @@ package com.moonie.authorization.jwt.controller;
 import com.moonie.authorization.jwt.JwtTokenUtil;
 import com.moonie.authorization.jwt.Jwtfilter;
 import com.moonie.authorization.jwt.dto.TokenDto;
-import com.moonie.authorization.login.dto.LoginDto;
+import com.moonie.authorization.user.dto.LoginRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +26,7 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 

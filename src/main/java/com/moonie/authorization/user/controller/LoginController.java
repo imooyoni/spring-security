@@ -1,13 +1,16 @@
-package com.moonie.authorization.login.controller;
+package com.moonie.authorization.user.controller;
 
-import com.moonie.authorization.login.dto.LoginDto;
-import com.moonie.authorization.login.response.LoginResponse;
-import com.moonie.authorization.login.service.LoginService;
+import com.moonie.authorization.user.dto.LoginRequest;
+import com.moonie.authorization.user.dto.SignUpRequest;
+import com.moonie.authorization.user.response.LoginResponse;
+import com.moonie.authorization.user.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 @Slf4j
@@ -23,13 +26,21 @@ public class LoginController {
     }
 
     @PostMapping("/submit")
-    public String setLoginInfo(@ModelAttribute LoginDto loginDTO, Model model){
-        String userName = loginDTO.getUsername();
-        String userPassword = loginDTO.getPassword();
-
-        log.info("::::::login controller:::::: id:{}, pw:{}", userName, userPassword);
-        LoginResponse loginResponse = loginService.setLoginInfo(userName, userPassword);
+    public String setLoginInfo(@ModelAttribute LoginRequest loginRequest, Model model) {
+        LoginResponse loginResponse = null;
+        try {
+            loginResponse = loginService.setLoginInfo(loginRequest);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         model.addAttribute("loginResponse", loginResponse);
+        return "index";
+    }
+
+    @PostMapping("/signup")
+    public String signUp(@ModelAttribute SignUpRequest signUpRequest, Model model){
+
         return "index";
     }
 

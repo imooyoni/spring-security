@@ -1,15 +1,17 @@
-package com.moonie.authorization.login.entity;
+package com.moonie.authorization.user.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@Builder
 @Table(name = "USER_BASIC")
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserBasicEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,15 @@ public class UserBasicEntity {
 
     @Column(name = "USER_PASSWORD")
     private String userPassword;
+
+    @Column(name="USER_COUNTRY_CODE")
+    private String userCountyCode;
+
+    @Column(name="USER_PHONE")
+    private String userPhone;
+
+    @Column(name="USER_SALT_KEY")
+    private String userSaltKey;
 
     @ManyToMany
     @JoinTable(

@@ -3,6 +3,7 @@ package com.moonie.authorization.common.exception;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
 import lombok.Getter;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 
 import java.util.Locale;
 
@@ -20,10 +21,18 @@ public class CustomException extends RuntimeException {
     }
 
     public int getStatus() {
-        return errorCode.getServerStatus();
+        return errorCode.getServerStatus().value();
     }
 
     public String getMessage(MessageSource messageSource, Locale locale) {
         return messageSource.getMessage(errorCode.getMessageKey(), null, locale);
+    }
+
+    public String getErrCode() {
+        return errorCode.getServiceCode();
+    }
+
+    public String getErrName() {
+        return errorCode.name();
     }
 }

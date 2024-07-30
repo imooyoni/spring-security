@@ -1,4 +1,4 @@
-package com.moonie.authorization.login.entity;
+package com.moonie.authorization.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @Table(name = "ROLES")
 public class RolesEntity {
-
     @Id @Column(name = "ROLE_NAME")
     private String roleName;
 }

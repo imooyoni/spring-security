@@ -1,11 +1,11 @@
-package com.moonie.authorization.login.dto;
+package com.moonie.authorization.user.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginDto {
+public class LoginRequest {
     private String username;
     private String password;
 }

@@ -1,8 +1,7 @@
 package com.moonie.authorization.user.service;
 
-import com.moonie.authorization.login.entity.UserBasicEntity;
-import com.moonie.authorization.user.repository.UserBasicRepository;
-import lombok.RequiredArgsConstructor;
+import com.moonie.authorization.user.entity.UserBasicEntity;
+import com.moonie.authorization.user.domain.UserBasicRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

@@ -19,6 +19,9 @@ spring:
   mustache:
     prefix: classpath:/templates/
     suffix: .mustache
+  messages:
+    basename: messages
+    encoding: UTF-8
   # JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

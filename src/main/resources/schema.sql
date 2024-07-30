@@ -4,6 +4,9 @@ create table USER_BASIC
     user_name varchar(255) not null,
     user_email varchar(255) not null,
     user_password varchar(255) not null,
+    user_country_code varchar(255) not null,
+    user_phone varchar(255) not null,
+    user_salt_key varchar(255) not null,
     primary key (user_id)
 );
 

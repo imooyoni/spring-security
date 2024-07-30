@@ -1,14 +1,16 @@
-package com.moonie.authorization.login.service;
+package com.moonie.authorization.user.service;
 
 import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
-import com.moonie.authorization.login.domain.LoginRepository;
-import com.moonie.authorization.login.entity.UserBasicEntity;
-import com.moonie.authorization.login.response.LoginResponse;
+import com.moonie.authorization.user.domain.LoginRepository;
+import com.moonie.authorization.user.dto.LoginRequest;
+import com.moonie.authorization.user.entity.UserBasicEntity;
+import com.moonie.authorization.user.response.LoginResponse;
+import com.moonie.authorization.util.EncryptUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 @Service
@@ -16,8 +18,10 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
-    public LoginResponse setLoginInfo(String userEmail, String userPassword){
-        Optional<UserBasicEntity> optUserEntity = loginRepository.findByUserEmailAndUserPassword(userEmail, userPassword);
+    public LoginResponse setLoginInfo(LoginRequest loginRequest) throws NoSuchAlgorithmException {
+        String userPassword = EncryptUtil.sha512(loginRequest.getPassword());
+
+        Optional<UserBasicEntity> optUserEntity = loginRepository.findByUserNameAndUserPassword(loginRequest.getUsername(), userPassword);
         LoginResponse loginResponse = new LoginResponse();
 
         if(optUserEntity.isPresent()){
@@ -26,7 +30,7 @@ public class LoginService {
                 loginResponse.setUserName(userBasicEntity.getUserName());
                 loginResponse.setUserEmail(userBasicEntity.getUserEmail());
         } else {
-            throw new CustomException(ErrorCode.LOGIN_NO_EXIST_USER);
+            throw new CustomException(ErrorCode.USER_NO_EXIST_USER);
         }
         return loginResponse;
     }

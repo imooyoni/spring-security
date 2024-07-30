@@ -1,4 +1,4 @@
-package com.moonie.authorization.login.response;
+package com.moonie.authorization.user.response;
 
 import lombok.Getter;
 import lombok.Setter;
