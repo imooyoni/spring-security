@@ -5,17 +5,22 @@ import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
 import com.moonie.authorization.common.reponse.CommonResponse;
 import com.moonie.authorization.common.service.CommonService;
+import com.moonie.authorization.excel.service.ExcelManageService;
 import com.moonie.authorization.user.dto.LoginRequest;
 import com.moonie.authorization.user.dto.ModifyUserInfoRequest;
 import com.moonie.authorization.user.dto.SignUpRequest;
+import com.moonie.authorization.excel.response.ExcelUserFileResponse;
 import com.moonie.authorization.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Tag(name="USER", description = "USER INFO 관련 API 입니다.")
 @Slf4j
@@ -25,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 public class UserController extends CommonController {
     private final CommonService commonService;
     private final UserService userService;
+    private final ExcelManageService excelManageService;
 
     @PostMapping("/signup")
     @Operation(summary = "signup service")
@@ -90,5 +96,12 @@ public class UserController extends CommonController {
             log.error("Custom exception occurred: ", e);
             throw e;
         }
+    }
+
+    @PostMapping("/excel")
+    @Operation(summary = "excel upload")
+    public CommonResponse excelUserUpload(@RequestParam("file")MultipartFile file) throws IOException {
+        List<ExcelUserFileResponse> response = excelManageService.excelFileuserUpload(file);
+        return commonService.getSingleResult(response);
     }
 }

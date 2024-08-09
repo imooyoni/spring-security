@@ -50,14 +50,16 @@ public class WebSecurityConfig {
                                                 .requestMatchers(h2RequestMatcher).permitAll()
                                                 .requestMatchers( "/","/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                                 .requestMatchers( "/api/authenticate").permitAll()
+                                                .requestMatchers("/user/**").permitAll()
                                                 .requestMatchers("/admin").hasRole("admin")
-                                                .requestMatchers("/user").hasRole("user")
+//                                                .requestMatchers("/user").hasRole("user")
                                                 .anyRequest().permitAll())
                     .cors(c -> {
                         CorsConfigurationSource source = request -> {
                             CorsConfiguration config = new CorsConfiguration();
-                            config.setAllowedOrigins(List.of("http://localhost:3000"
-                                                             , "test.com"
+                            config.setAllowedOrigins(List.of(
+                                                            "http://localhost:3000"
+                                                          , "test.com"
                                                             )
                                                     );
                             config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));

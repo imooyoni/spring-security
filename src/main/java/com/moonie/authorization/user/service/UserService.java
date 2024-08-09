@@ -2,6 +2,8 @@ package com.moonie.authorization.user.service;
 
 import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
+import com.moonie.authorization.jwt.Jwtfilter;
+import com.moonie.authorization.jwt.dto.TokenDto;
 import com.moonie.authorization.user.domain.RolesRepository;
 import com.moonie.authorization.user.domain.UserBasicRepository;
 import com.moonie.authorization.user.domain.UserRoleRepository;
@@ -15,11 +17,19 @@ import com.moonie.authorization.user.response.ModifyUserInfoResponse;
 import com.moonie.authorization.user.response.SignUpResponse;
 import com.moonie.authorization.util.EncryptUtil;
 import com.moonie.authorization.util.GlobalContants;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
@@ -41,14 +51,31 @@ public class UserService {
 
         if(optUserEntity.isPresent()){
             UserBasicEntity userBasicEntity = optUserEntity.get();
-            loginResponse.setUserId(userBasicEntity.getUserId());
-            loginResponse.setUserName(userBasicEntity.getUserName());
-            loginResponse.setUserEmail(userBasicEntity.getUserEmail());
+                loginResponse.setUserId(userBasicEntity.getUserId());
+                loginResponse.setUserName(userBasicEntity.getUserName());
+                loginResponse.setUserEmail(userBasicEntity.getUserEmail());
+
+
         } else {
             throw new CustomException(ErrorCode.USER_NO_EXIST_USER);
         }
         return loginResponse;
     }
+// todo jwt token process
+//    private ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginDto) {
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+//
+//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String jwt = jwtTokenUtil.createToken(authentication);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        httpHeaders.add(Jwtfilter.authHeader, "Bearer " + jwt);
+//
+//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+//    }
 
     public SignUpResponse setSignUpInfo(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
         try{
