@@ -2,21 +2,30 @@ package com.moonie.authorization.util;
 
 import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 public class ExcelProcessor {
+    /***
+     * detail excelupload
+     * @param file
+     * @param labelMapper
+     * @param validators
+     * @return
+     * @throws IOException
+     */
     public List<Map<String, Object>> processExcelFile(MultipartFile file, Map<String, String> labelMapper, Map<String, Function<String, String>> validators) throws IOException {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
@@ -47,7 +56,6 @@ public class ExcelProcessor {
             Map<String, Object> rowData = new HashMap<>();
             StringBuilder errMsg = new StringBuilder();
 
-//            for (int j = 0; j < row.getLastCellNum(); j++) {
             for (Map.Entry<Integer, String> entry : columnMapping.entrySet()) {
                 int columnIndex = entry.getKey();
                 String fieldName = entry.getValue();
@@ -78,16 +86,6 @@ public class ExcelProcessor {
                     }
                 }
                 rowData.put(fieldName, cellValue);
-//                String fieldName = columnMapping.get(j);
-//                if (fieldName != null) {
-//                    if (validators != null && validators.containsKey(fieldName)) {
-//                        String error = validators.get(fieldName).apply(cellValue);
-//                        if (error != null) {
-//                            errMsg.append(error).append(" ");
-//                        }
-//                    }
-//                    rowData.put(fieldName, cellValue);
-//                }
             }
 
             rowData.put("rowNum", i + 1);
@@ -98,5 +96,58 @@ public class ExcelProcessor {
         }
 
         return resultList;
+    }
+
+    // excel file down module
+    public void downloadExcelTemplate(HttpServletResponse response, String sheetName, String fileName, List<String> fieldList, Map<String, String> labelMapper) throws Exception {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xlsx\"");
+
+        OutputStream output = response.getOutputStream();
+
+        try (
+                Workbook workbook = new XSSFWorkbook();
+                OutputStream outputStream = response.getOutputStream()
+        ) {
+            // 시트 생성
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // 스타일 설정
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
+
+            // 헤더 행 생성
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < fieldList.size(); i++) {
+                String headerValue = labelMapper.get(fieldList.get(i));
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headerValue);
+                cell.setCellStyle(headerStyle);
+            }
+
+            //header value
+            for(int i=0; i<fieldList.size(); i++){
+                String headerValue = labelMapper.get(fieldList.get(i));
+
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headerValue);
+                cell.setCellStyle(headerStyle);
+            }
+
+            for (int i = 0; i<fieldList.size(); i++) {
+                // 열넓이 설정 (열 위치, 넓이)
+                sheet.autoSizeColumn(i);
+                // cell is 255 chararcters 에러 원인(윗줄만으로는 컬럼의 width가 부족하여 더 늘려야함.)
+    //            sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1024);
+            }
+            // WorkSheet 쓰기
+            workbook.write(output);
+        } catch (Exception e) {
+            log.error("엑셀 파일 다운로드 중 오류 발생: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 }
