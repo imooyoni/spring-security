@@ -4,6 +4,7 @@ import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
 import com.moonie.authorization.excel.response.ExcelUserFileResponse;
 import com.moonie.authorization.util.ExcelProcessor;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -140,5 +141,15 @@ public class ExcelManageService {
 
 //        Iterator<Map<String, Object>> result = excelDataList.iterator();
         return excelUserFileResponseList;
+    }
+
+    public void downloadExcelTemplateViaWeb(HttpServletResponse response, String sheetName, String fileName, List<String> fieldList, Map<String, String> labelMapper) throws Exception{
+        ExcelProcessor excelProcessor = new ExcelProcessor();
+        excelProcessor.downloadExcelTemplateViaWeb(response, sheetName, fileName, fieldList, labelMapper);
+    }
+
+    public void downloadExcelTemplateToFile(String filePath, String sheetName, String fileName, List<String> fieldList, Map<String, String> labelMapper) throws Exception{
+        ExcelProcessor excelProcessor = new ExcelProcessor();
+        excelProcessor.downloadExcelTemplateToFile(sheetName, filePath, fieldList, labelMapper);
     }
 }

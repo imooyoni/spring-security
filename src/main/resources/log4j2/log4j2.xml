@@ -2,7 +2,7 @@
 <Configuration status="DEBUG">
     <Properties>
         <Property name="logPath">./logs</Property>
-        <Property name="logPattern">[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n</Property>
+        <Property name="logPattern">[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} %X{uniqueId} - %msg%n</Property>
         <Property name="serviceName">application</Property>
     </Properties>
     <Appenders>

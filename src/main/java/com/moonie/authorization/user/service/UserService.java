@@ -2,9 +2,9 @@ package com.moonie.authorization.user.service;
 
 import com.moonie.authorization.common.exception.CustomException;
 import com.moonie.authorization.common.exception.handler.ErrorCode;
+import com.moonie.authorization.jwt.JwtTokenUtil;
 import com.moonie.authorization.jwt.Jwtfilter;
 import com.moonie.authorization.jwt.dto.TokenDto;
-import com.moonie.authorization.user.domain.RolesRepository;
 import com.moonie.authorization.user.domain.UserBasicRepository;
 import com.moonie.authorization.user.domain.UserRoleRepository;
 import com.moonie.authorization.user.dto.LoginRequest;
@@ -25,6 +25,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,10 @@ public class UserService {
 
     private final UserBasicRepository userBasicRepository;
     private final UserRoleRepository userRoleRepository;
+
+//    private final TokenProvider tokenProvider;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     public LoginResponse setLoginInfo(LoginRequest loginRequest) throws NoSuchAlgorithmException {
         String userPassword = EncryptUtil.sha512(loginRequest.getPassword());
@@ -62,25 +67,33 @@ public class UserService {
         return loginResponse;
     }
 // todo jwt token process
-//    private ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginDto) {
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-//
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        String jwt = jwtTokenUtil.createToken(authentication);
-//
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        httpHeaders.add(Jwtfilter.authHeader, "Bearer " + jwt);
-//
-//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
-//    }
+public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginRequest) {
+        Optional<UserBasicEntity> optUserEntity = userBasicRepository.findByUserName(loginRequest.getUsername());
+
+        if(!optUserEntity.isPresent()){
+            throw new CustomException(ErrorCode.USER_NO_EXIST_USER);
+        }
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = jwtTokenUtil.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(Jwtfilter.authHeader, "Bearer " + jwt);
+
+        return new ResponseEntity<>(new TokenDto(jwt, optUserEntity.get()), httpHeaders, HttpStatus.OK);
+//        } catch (NoSuchAlgorithmException e) {
+//            throw new RuntimeException(e);
+    }
 
     public SignUpResponse setSignUpInfo(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {
         try{
 
-            String userPassword = EncryptUtil.sha512(signUpRequest.getPassword());
+            String userPassword = EncryptUtil.sha256(signUpRequest.getPassword());
             Optional<UserBasicEntity> optUserEntity = userBasicRepository.findByUserNameAndUserPassword(signUpRequest.getUsername(), userPassword);
 
             if(optUserEntity.isPresent()){

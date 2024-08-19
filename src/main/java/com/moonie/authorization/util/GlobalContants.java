@@ -1,7 +1,5 @@
 package com.moonie.authorization.util;
 
-import org.springframework.beans.factory.annotation.Value;
-
 public final class GlobalContants {
     // jwt
     public static final String SALT_KEY = "salt";

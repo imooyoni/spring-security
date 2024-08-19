@@ -91,8 +91,7 @@ public class JwtTokenUtil implements InitializingBean {
     }
 
     private Key createSigningKey(String key) {
-        // TODO Auto-generated method stub
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
-        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
     }
 }

@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class ExcelProcessor {
     }
 
     // excel file down module
-    public void downloadExcelTemplate(HttpServletResponse response, String sheetName, String fileName, List<String> fieldList, Map<String, String> labelMapper) throws Exception {
+    public void downloadExcelTemplateViaWeb(HttpServletResponse response, String sheetName, String fileName, List<String> fieldList, Map<String, String> labelMapper) throws Exception {
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xlsx\"");
 
@@ -108,6 +109,7 @@ public class ExcelProcessor {
         try (
                 Workbook workbook = new XSSFWorkbook();
                 OutputStream outputStream = response.getOutputStream()
+//                FileOutputStream fileOut = new FileOutputStream(filePath)
         ) {
             // 시트 생성
             Sheet sheet = workbook.createSheet(sheetName);
@@ -141,13 +143,62 @@ public class ExcelProcessor {
                 // 열넓이 설정 (열 위치, 넓이)
                 sheet.autoSizeColumn(i);
                 // cell is 255 chararcters 에러 원인(윗줄만으로는 컬럼의 width가 부족하여 더 늘려야함.)
-    //            sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1024);
+                sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1024);
             }
             // WorkSheet 쓰기
             workbook.write(output);
+//            workbook.write(fileOut);
+        } catch (Exception e) {
+            log.error("엑셀 파일 다운로드 중 오류 발생: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public void downloadExcelTemplateToFile(String sheetName, String filePath, List<String> fieldList, Map<String, String> labelMapper) throws Exception {
+        try (
+                Workbook workbook = new XSSFWorkbook();
+                FileOutputStream fileOut = new FileOutputStream(filePath)
+        ) {
+            // 시트 생성
+            Sheet sheet = workbook.createSheet(sheetName);
+
+            // 스타일 설정
+            CellStyle headerStyle = workbook.createCellStyle();
+            headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
+            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
+
+            // 헤더 행 생성
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < fieldList.size(); i++) {
+                String headerValue = labelMapper.get(fieldList.get(i));
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headerValue);
+                cell.setCellStyle(headerStyle);
+            }
+
+            //header value
+            for(int i=0; i<fieldList.size(); i++){
+                String headerValue = labelMapper.get(fieldList.get(i));
+
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headerValue);
+                cell.setCellStyle(headerStyle);
+            }
+
+            for (int i = 0; i<fieldList.size(); i++) {
+                // 열넓이 설정 (열 위치, 넓이)
+                sheet.autoSizeColumn(i);
+                // cell is 255 chararcters 에러 원인(윗줄만으로는 컬럼의 width가 부족하여 더 늘려야함.)
+                sheet.setColumnWidth(i, (sheet.getColumnWidth(i)) + 1024);
+            }
+            // WorkSheet 쓰기
+            workbook.write(fileOut);
         } catch (Exception e) {
             log.error("엑셀 파일 다운로드 중 오류 발생: {}", e.getMessage(), e);
             throw e;
         }
     }
 }
+

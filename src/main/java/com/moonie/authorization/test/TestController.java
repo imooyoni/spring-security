@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.util.Locale;
 @Tag(name = "# TEST API", description = "SECURITY 인가 TEST API_2")
 @Controller
 @NoArgsConstructor( access = AccessLevel.PROTECTED, force = true)
+@Slf4j
 public class TestController {
     private final UserEntity userEntity;
     @RequestMapping("/admin")
@@ -44,6 +46,7 @@ public class TestController {
 //    }
     @GetMapping("/test")
     public String getUiGuide(Model model){
+        log.info("test api");
         model.addAttribute("roleName","민생 관리자");
         return "admin/ui_guide";
     }

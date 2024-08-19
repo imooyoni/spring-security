@@ -11,7 +11,7 @@ Configutation:
         value: "UTF-8"
       - name: "layout-pattern"
 #        value: "%style{%d}{black} %highlight{%-5level} [%style{%t}{bright,blue}] %style{%C}{bright,yellow}: %msg%n%throwable"
-        value: "%highlight{[%-5level]}{FATAL=bg_red, ERROR=red, INFO=green, DEBUG=blue} %style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} [%C] %style{[%t]}{yellow}- %m%n"
+        value: "%highlight{[%-5level]}{FATAL=bg_red, ERROR=red, INFO=green, DEBUG=blue} %X{uniqueId} %style{%d{yyyy/MM/dd HH:mm:ss,SSS}}{cyan} [%C] %style{[%t]}{yellow}- %m%n"
       - name: "info-log"
         value: ${log-path}/tugboatApi/api-info.log
       - name: "error-log"
