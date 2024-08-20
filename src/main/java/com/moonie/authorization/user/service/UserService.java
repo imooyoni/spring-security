@@ -43,7 +43,6 @@ public class UserService {
 
     private final UserBasicRepository userBasicRepository;
     private final UserRoleRepository userRoleRepository;
-
 //    private final TokenProvider tokenProvider;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -66,8 +65,8 @@ public class UserService {
         }
         return loginResponse;
     }
-// todo jwt token process
-public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginRequest) {
+
+    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest loginRequest) {
         Optional<UserBasicEntity> optUserEntity = userBasicRepository.findByUserName(loginRequest.getUsername());
 
         if(!optUserEntity.isPresent()){
@@ -86,8 +85,6 @@ public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginRequest login
         httpHeaders.add(Jwtfilter.authHeader, "Bearer " + jwt);
 
         return new ResponseEntity<>(new TokenDto(jwt, optUserEntity.get()), httpHeaders, HttpStatus.OK);
-//        } catch (NoSuchAlgorithmException e) {
-//            throw new RuntimeException(e);
     }
 
     public SignUpResponse setSignUpInfo(SignUpRequest signUpRequest) throws NoSuchAlgorithmException {

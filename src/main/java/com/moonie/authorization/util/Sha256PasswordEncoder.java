@@ -2,7 +2,7 @@ package com.moonie.authorization.util;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class Sha512PasswordEncoder implements PasswordEncoder {
+public class Sha256PasswordEncoder implements PasswordEncoder {
 
     @Override
     public String encode(CharSequence rawPassword) {

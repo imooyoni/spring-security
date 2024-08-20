@@ -5,13 +5,12 @@ import com.moonie.authorization.jwt.JwtAuthenticationEntryPoint;
 import com.moonie.authorization.jwt.JwtSecurityConfig;
 import com.moonie.authorization.jwt.JwtTokenUtil;
 import com.moonie.authorization.user.service.CustomUserDetailService;
-import com.moonie.authorization.util.Sha512PasswordEncoder;
+import com.moonie.authorization.util.Sha256PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -33,7 +32,7 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new Sha512PasswordEncoder();
+        return new Sha256PasswordEncoder();
 //        return new BCryptPasswordEncoder();
     }
 

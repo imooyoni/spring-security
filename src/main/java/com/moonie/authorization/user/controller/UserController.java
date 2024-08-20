@@ -73,10 +73,6 @@ public class UserController extends CommonController {
             log.error("No such algorithm exception occurred: ", e);
             throw e;
         }
-//        catch (NoSuchAlgorithmException e) {
-//            log.error("No such algorithm exception occurred: ", e);
-//            throw new RuntimeException(e);
-//        }
     }
 
     @PutMapping("/modification")
