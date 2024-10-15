@@ -82,7 +82,3 @@ http://localhost:8080/swagger-ui.html
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-[Specify your license here]
